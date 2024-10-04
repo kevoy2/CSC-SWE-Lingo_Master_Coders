@@ -1,1 +1,2 @@
-# CSC-SWE-Lingo_Master_Coders
+# LingoScape (Live Translation App) 
+- 
