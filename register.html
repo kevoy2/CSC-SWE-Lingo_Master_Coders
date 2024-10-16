@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LingoScape - Live Translation</title>
+    <title>Register - LingoScape</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <nav class="top-nav">
         <button id="menu-toggle" class="menu-btn">Menu</button>
         <div class="nav-links">
@@ -24,9 +25,8 @@
         <a href="support-ticket.html">Support Ticket</a>
     </div>
 
-    <main class="container">
-        <h1>LingoScape</h1>
-        <p>Live Translation Anytime, Anywhere</p>
+    <div class="container">
+        <h1>Create Your LingoScape Account</h1>
 
         <div class="avatar">
             <img src="LingoScape_logo.jpg" alt="LingoScape Logo" class="ls-logo">
@@ -34,19 +34,19 @@
 
         <form>
             <input type="text" placeholder="Username" required>
+            <input type="email" placeholder="Email" required>
             <input type="password" placeholder="Password" required>
+            <input type="password" placeholder="Confirm Password" required>
             <div class="button-group">
-                <button type="submit" class="login">Login</button>
-                <button type="button" class="cancel">Cancel</button>
-            </div>
-            <div class="form-footer">
-                <label>
-                    <input type="checkbox"> Remember me
-                </label>
-                <a href="reset-password.html">Forgot password?</a>
+                <button type="submit" class="register">Register</button>
+                <button type="button" class="cancel" onclick="window.location.href='index.html'">Cancel</button>
             </div>
         </form>
-    </main>
+
+        <p class="form-footer">
+            Already have an account? <a href="index.html">Log in</a>
+        </p>
+    </div>
 
     <footer>
         &#xA9; 2024 LingoScape. All rights reserved.

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Text Translation - LingoScape</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="top-nav">
+        <button id="menu-toggle" class="menu-btn">Menu</button>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div id="side-menu" class="side-menu">
+        <a href="translation.html">Translation</a>
+        <a href="video-conference.html">Video Conference</a>
+        <a href="register.html">Register</a>
+        <a href="support-ticket.html">Support Ticket</a>
+    </div>
+
+    <div class="container">
+        <h1>Text to Text Translation</h1>
+        <div class="translation-box">
+            <textarea placeholder="Enter text to translate" id="source-text"></textarea>
+            <div class="language-selection">
+                <select id="source-language">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                </select>
+                <button id="swap-languages">S</button>
+                <select id="target-language">
+                    <option value="es">Spanish</option>
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                </select>
+            </div>
+            <button id="translate-button">Translate</button>
+            <textarea id="translated-text" readonly placeholder="Translation will appear here"></textarea>
+        </div>
+    </div>
+
+    <footer>
+        &#xA9; 2024 LingoScape. All rights reserved.
+    </footer>
+    
+    <script src="menu-toggle.js"></script> 
+    <script src="translation.js"></script>
+</body>
+</html>
