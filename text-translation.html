@@ -8,9 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <nav class="top-nav">
-        <button id="menu-toggle" class="menu-btn">Menu</button>
+        <button id="menu-toggle" class="menu-btn">
+            <span class="menu-icon"></span>
+        </button>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
@@ -25,17 +26,21 @@
         <a href="support-ticket.html">Support Ticket</a>
     </div>
 
-    <div class="container">
+    <main class="container" role="main">
         <h1>Text to Text Translation</h1>
         <div class="translation-box">
-            <textarea placeholder="Enter text to translate" id="source-text"></textarea>
+            <textarea placeholder="Enter text to translate"></textarea>
             <div class="language-selection">
                 <select id="source-language">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
                 </select>
-                <button id="swap-languages">S</button>
+                <button id="swap-languages" aria-label="Swap languages">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 16L3 12M3 12L7 8M3 12H21M17 8L21 12M21 12L17 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
                 <select id="target-language">
                     <option value="es">Spanish</option>
                     <option value="en">English</option>
@@ -45,13 +50,13 @@
             <button id="translate-button">Translate</button>
             <textarea id="translated-text" readonly placeholder="Translation will appear here"></textarea>
         </div>
-    </div>
+    </main>
 
     <footer>
-        &#xA9; 2024 LingoScape. All rights reserved.
+        © 2024 LingoScape. All rights reserved.
     </footer>
-    
-    <script src="menu-toggle.js"></script> 
+
+    <script src="menu-toggle.js"></script>
     <script src="translation.js"></script>
 </body>
 </html>
