@@ -1,57 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>LingoScape Live Translation App</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LingoScape Live Translation App</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	<header>
+
     <nav>
-      <ul>
-        <li><a href="about.html">About</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="cart.html">Education</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-      </ul>
+        <div class="navbar">
+            <a href="#">About</a>
+            <a href="#">Projects</a>
+            <a href="#">Education</a>
+            <a href="#">Contact Us</a>
+        </div>
     </nav>
-		<h1>LingoScape Live Translation App</h1>
-	</header>
-    
-	
-	<main>
-      <p>LingoScape </br>
-        Live Translation Anytime, Anywhere
-      </p>
-    
-      <form action="action_page.php" method="post">
-        <div class="imgcontainer">
-          <img src="img_avatar2.png" alt="Avatar" class="avatar">
-        </div>
-      
-        <div class="container">
-          <label for="uname"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="uname" required> </br>
-      
-          <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" required> </br>
-      
-          <button type="submit">Login</button>
-          <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-          </label>
-        </div>
-      
-        <div class="container" style="background-color:#f1f1f1">
-          <button type="button" class="cancelbtn">Cancel</button>
-          <span class="psw">Forgot <a href="#">password?</a></span>
-        </div>
-      </form>
-	</main>
-	
+
+    <div class="container">
+        <form>
+            <h1>LingoScape</h1>
+            <p>Live Translation Anytime, Anywhere</p>
+            <div class="avatar"></div>
+            
+            <input type="text" id="username" name="username" placeholder="Enter Username">
+            <input type="password" id="password" name="password" placeholder="Enter Password">
+            
+            <div>
+                <button type="submit" class="login">Login</button>
+                <button type="button" class="cancel">Cancel</button>
+            </div>
+            
+            <label>
+                <input type="checkbox" name="remember"> Remember me
+            </label>
+            <a href="#">Forgot password?</a>
+        </form>
+    </div>
+
+    <footer>
+        &copy; 2024 LingoScape. All rights reserved.
+    </footer>
+
 </body>
-<footer>
-    <p>&copy; LingoMasters 2024</p>
-</footer>
 </html>
-
-
