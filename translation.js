@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     translateButton.addEventListener('click', function() {
-        // Here you would typically make an API call to a translation service
+        // we'll make an API call to a translation service
         // For now, we'll just simulate a translation
         const translatedText = `Translated: ${sourceText.value}`;
         targetText.value = translatedText;
