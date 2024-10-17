@@ -7,15 +7,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const translateButton = document.getElementById('translate-button');
 
     swapButton.addEventListener('click', function() {
-        const temp = sourceLanguage.value;
+        let tempCode = sourceLanguage.value,
+        tempText = sourceText.value;
         sourceLanguage.value = targetLanguage.value;
-        targetLanguage.value = temp;
+        targetLanguage.value = tempCode;
+        sourceText.value = targetText.value;
+        targetText.value = tempText;
     });
 
     translateButton.addEventListener('click', function() {
-        // we'll make an API call to a translation service
-        // For now, we'll just simulate a translation
-        const translatedText = `Translated: ${sourceText.value}`;
-        targetText.value = translatedText;
+        let apiUrl = `https://api.mymemory.translated.net/get?q=${sourceText.value}&langpair=${sourceLanguage.value}|${targetLanguage.value}`;
+        fetch(apiUrl).then(res => res.json()).then(data => {
+            console.log(data);
+            targetText.value = data.responseData.translatedText;
+        }).catch(error => {
+            console.error('Translation error:', error);
+            targetText.value = 'Error: Could not translate text';
+        });
     });
 });
