@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Main Navigation Links -->
     <nav class="top-nav">
         <button id="menu-toggle" class="menu-btn">
             <span class="menu-icon"></span>
@@ -18,7 +19,7 @@
             <a href="contact.html">Contact</a>
         </div>
     </nav>
-
+    <!-- Side Menu -->
     <div id="side-menu" class="side-menu">
         <a href="translation.html">Translation</a>
         <a href="video-conference.html">Video Conference</a>
@@ -29,8 +30,20 @@
     <main class="container" role="main">
         <h1>Text to Text Translation</h1>
         <div class="translation-box">
-            <textarea placeholder="Enter text to translate" maxlength="2000"></textarea>
+            <!-- Source Text Area -->
+            <div class="textarea-wrapper">
+                <textarea id="source-text" placeholder="Enter text to translate" maxlength="1000"></textarea>
+                <div class="textarea-controls">
+                    <div class="left-controls">
+                        <button class="icon-button" id="source-volume" aria-label="Read text aloud"><i class="fas fa-volume-up"></i></button>
+                        <button class="icon-button" id="clear-text" aria-label="Clear text">CLEAR</button>
+                    </div>
+                    <div id="char-count">0/1000</div>
+                </div>
+            </div>
+
             <div class="language-selection">
+                <!-- Source Language Dropdown -->
                 <select id="source-language">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
@@ -47,13 +60,14 @@
                     <option value="nl">Dutch</option>
                     <option value="tr">Turkish</option>
                     <option value="uk">Ukrainian</option>
-
                 </select>
+                <!-- Language Swap Button -->
                 <button id="swap-languages" aria-label="Swap languages">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7 16L3 12M3 12L7 8M3 12H21M17 8L21 12M21 12L17 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
+                <!-- Target Language Dropdown -->
                 <select id="target-language">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
@@ -73,15 +87,26 @@
                 </select>
             </div>
             <button id="translate-button">Translate</button>
-            <textarea id="translated-text" readonly placeholder="Translation will appear here"></textarea>
+            <!-- Target Text Area -->
+            <div class="textarea-wrapper">
+                <textarea id="translated-text" readonly placeholder="Translation will appear here"></textarea>
+                <div class="textarea-controls">
+                    <div class="left-controls">
+                        <button class="icon-button" id="target-volume" aria-label="Read translation aloud"><i class="fas fa-volume-up"></i></button>
+                        <button class="icon-button" id="target-copy" aria-label="Copy translation"><i class="fas fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+        
         </div>
     </main>
 
     <footer>
-        © 2024 LingoScape. All rights reserved.
+        &#xA9; 2024 LingoScape. All rights reserved.
     </footer>
 
     <script src="menu-toggle.js"></script>
     <script src="translation.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </body>
 </html>
