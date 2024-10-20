@@ -35,10 +35,9 @@
             <img src="LingoScape_logo.jpg" alt="LingoScape Logo" class="ls-logo">
         </div>
 
-        <form>
-            <input type="text" placeholder="Username" required>
-            <input type="password" placeholder="Password" required>
-            <!-- Login Form Buttons -->
+        <form id="login-form">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
             <div class="button-group">
                 <button type="submit" class="login">Login</button>
                 <button type="button" class="cancel">Cancel</button>
@@ -56,6 +55,36 @@
         &#xA9; 2024 LingoScape. All rights reserved.
     </footer>
 
-    <script src="menu-toggle.js"></script> 
+    <script src="menu-toggle.js"></script>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const loginData = Object.fromEntries(formData.entries());
+            loginData.password = String(loginData.password);
+
+            try {
+                const response = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData),
+                });
+                const data = await response.json();
+                console.log('Server response:', data);
+                if (response.ok) {
+                    alert('Login successful!');
+                    window.location.href = 'translation.html';
+                } else {
+                    alert(`Login failed: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('An error occurred during login.');
+            }
+        });
+    </script>
 </body>
 </html>
