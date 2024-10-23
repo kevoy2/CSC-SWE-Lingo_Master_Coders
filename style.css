@@ -35,7 +35,7 @@ form, .translation-box {
     text-align: center;
 }
 
-input[type="text"], input[type="password"], input[type="email"], textarea, select {
+input[type="text"], input[type="password"], input[type="email"], input[type="date"], textarea, select {
     width: 100%;
     padding: 12px 15px;
     margin: 10px 0;
@@ -43,6 +43,8 @@ input[type="text"], input[type="password"], input[type="email"], textarea, selec
     border-radius: 6px;
     font-size: 16px;
     box-sizing: border-box;
+    color: #7F8C8D;
+    font-family: 'Poppins', sans-serif;
 }
 
 input:focus, textarea:focus, select:focus {
