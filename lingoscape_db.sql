@@ -1,101 +1,93 @@
--- PROJECT: LINGOSCAPE --
+-- CODE TO CREATE NECESSARY RELATIONAL TABLES FOR LINGOSCAPE
 
--- Table: User
-CREATE TABLE "User" (
-    user_id SERIAL PRIMARY KEY,
-    username VARCHAR(255),
-    password VARCHAR(255)
+-- Main tables without foreign key references
+
+CREATE TABLE "user_profiles" ( 
+    "id" BIGSERIAL PRIMARY KEY, 
+    "first_name" TEXT NOT NULL,
+    "last_name" TEXT NOT NULL, 
+    "dob" DATE NOT NULL, 
+    "age" INT, 
+    "email" TEXT UNIQUE NOT NULL, 
+    "password" TEXT NOT NULL, 
+    "language" VARCHAR(100) DEFAULT 'English', 
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 );
 
--- Table: User Settings
-CREATE TABLE "User_Settings" (
-    preference_id SERIAL PRIMARY KEY,
-    user_id INT,
-    light_dark_mode BOOLEAN,
-    display_language VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES "User"(user_id)
+CREATE TABLE "languages" (
+    "code" VARCHAR(50) PRIMARY KEY,
+    "name" VARCHAR(100) NOT NULL
 );
 
--- Table: User Profile
-CREATE TABLE "User_Profile" (
-    profile_id SERIAL PRIMARY KEY,
-    user_id INT,
-    first_name VARCHAR(255),
-    middle_initial VARCHAR(10),
-    last_name VARCHAR(255),
-    email VARCHAR(255),
-    language VARCHAR(255),
-    age INT,
-    date_of_birth DATE,
-    FOREIGN KEY (user_id) REFERENCES "User"(user_id)
+-- Tables with foreign key references
+
+CREATE TABLE "users" ( 
+    "id" BIGSERIAL PRIMARY KEY, 
+    "profile_id" BIGSERIAL, 
+    "email" TEXT UNIQUE NOT NULL, 
+    "password" TEXT NOT NULL, 
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY ("profile_id") REFERENCES "user_profiles"("id") ON DELETE CASCADE 
 );
 
--- Table: Video Conference
-CREATE TABLE "Video_Conference" (
-    conference_id SERIAL PRIMARY KEY,
-    user_id INT,
-    original_language_id INT,
-    target_language_id INT,
-    FOREIGN KEY (user_id) REFERENCES "User"(user_id),
-    FOREIGN KEY (original_language_id) REFERENCES "Language"(language_id),
-    FOREIGN KEY (target_language_id) REFERENCES "Language"(language_id)
+
+
+-- NOTE !!!
+-- NEED TO REWRITE THE DATABASE TABLES FOR THE BELOW 
+
+
+CREATE TABLE "chat_history" (
+	"translation_id" BIGSERIAL PRIMARY KEY,
+    "user_id" BIGSERIAL,
+    "origin_lang_code" VARCHAR(10),
+    "target_lang_code" VARCHAR(10),
+    "source_text" TEXT NOT NULL,
+    "target_text" TEXT NOT NULL,
+    "created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE,
+    FOREIGN KEY ("origin_lang_code") REFERENCES "languages"("lang_code") ON DELETE RESTRICT,
+    FOREIGN KEY ("target_lang_code") REFERENCES "languages"("lang_code") ON DELETE RESTRICT
 );
 
--- Table: Chat History
-CREATE TABLE "Chat_History" (
-    translation_id SERIAL PRIMARY KEY,
-    user_id INT,
-    original_language_id INT,
-    target_language_id INT,
-    input_text VARCHAR(255),
-    output_text VARCHAR(255),
-    original_language VARCHAR(255),
-    target_language VARCHAR(255),
-    timestamp TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES "User"(user_id),
-    FOREIGN KEY (original_language_id) REFERENCES "Language"(language_id),
-    FOREIGN KEY (target_language_id) REFERENCES "Language"(language_id)
+CREATE TABLE "favorite_phrases" (
+    "fav_id" BIGSERIAL PRIMARY KEY,
+    "user_id" BIGSERIAL,
+    "translation_id" BIGSERIAL,
+    FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE,
+    FOREIGN KEY ("translation_id") REFERENCES "chat_history"("translation_id") ON DELETE CASCADE
 );
 
--- Table: Favorite Phrases
-CREATE TABLE "Favorite_Phrases" (
-    fav_id SERIAL PRIMARY KEY,
-    user_id INT,
-    translation_id INT,
-    original_language_id INT,
-    target_language_id INT,
-    input_text VARCHAR(255),
-    output_text VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES "User"(user_id),
-    FOREIGN KEY (translation_id) REFERENCES "Chat_History"(translation_id),
-    FOREIGN KEY (original_language_id) REFERENCES "Language"(language_id),
-    FOREIGN KEY (target_language_id) REFERENCES "Language"(language_id)
+CREATE TABLE "emergency_phrases" (
+    "emg_id" BIGSERIAL PRIMARY KEY,
+    "translation_id" BIGSERIAL,
+    "emergency" BOOLEAN DEFAULT 'false',
+    FOREIGN KEY ("translation_id") REFERENCES "chat_history"("translation_id") ON DELETE SET NULL
 );
 
--- Table: Support Ticket
-CREATE TABLE "Support_Ticket" (
-    ticket_id SERIAL PRIMARY KEY,
-    user_id INT,
-    subject VARCHAR(255),
-    description VARCHAR(255),
-    status VARCHAR(50),
-    FOREIGN KEY (user_id) REFERENCES "User"(user_id)
+CREATE TABLE "ticket_id" (
+    "ticket_id" BIGSERIAL PRIMARY KEY,
+    "user_id" BIGSERIAL,
+    "subject" VARCHAR(255) NOT NULL,
+    "description" TEXT NOT NULL,
+    "status" VARCHAR(50) DEFAULT 'Pending',
+    FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE SET NULL
 );
 
--- Table: Emergency Phrases
-CREATE TABLE "Emergency_Phrases" (
-    phrase_id SERIAL PRIMARY KEY,
-    original_language_id INT,
-    target_language_id INT,
-    text_in_target_language VARCHAR(255),
-    text_in_original_language VARCHAR(255),
-    emergency_type VARCHAR(255),
-    FOREIGN KEY (original_language_id) REFERENCES "Language"(language_id),
-    FOREIGN KEY (target_language_id) REFERENCES "Language"(language_id)
+CREATE TABLE "video_conferences" (
+    "conference_id" BIGSERIAL PRIMARY KEY,
+    "user_id" BIGSERIAL,
+    "origin_lang_code" VARCHAR(10),
+    "target_lang_code" VARCHAR(10),
+    FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE,
+    FOREIGN KEY ("origin_lang_code") REFERENCES "languages"("lang_code") ON DELETE RESTRICT,
+    FOREIGN KEY ("target_lang_code") REFERENCES "languages"("lang_code") ON DELETE RESTRICT
 );
 
--- Table: Language
-CREATE TABLE "Language" (
-    language_id SERIAL PRIMARY KEY,
-    language_name VARCHAR(255)
+CREATE TABLE "user_settings" (
+    "preference_id" BIGSERIAL PRIMARY KEY,
+    "user_id" BIGSERIAL UNIQUE,
+    "theme" BOOLEAN,
+    "ui_language" VARCHAR(10) DEFAULT 'en',
+    FOREIGN KEY ("user_id") REFERENCES "users"("user_id") ON DELETE CASCADE,
+    FOREIGN KEY ("ui_language") REFERENCES "languages"("lang_code") ON DELETE RESTRICT
 );
