@@ -9,9 +9,9 @@
 </head>
 <body>
     <nav class="top-nav">
-        <button id="menu-toggle" class="menu-btn">
+        <!-- <button id="menu-toggle" class="menu-btn">
             <span class="menu-icon"></span>
-        </button>
+        </button> -->
         <!-- Main Navigation Links -->
         <div class="nav-links">
             <a href="index.html">Home</a>
@@ -40,12 +40,9 @@
             <input type="password" name="password" placeholder="Password" required>
             <div class="button-group">
                 <button type="submit" class="login">Login</button>
-                <button type="button" class="cancel">Cancel</button>
+                <button type="button" class="cancel" onclick="window.location.href='register.html'">Sign Up</button>
             </div>
             <div class="form-footer">
-                <label>
-                    <input type="checkbox"> Remember me
-                </label>
                 <a href="reset-password.html">Forgot password?</a>
             </div>
         </form>

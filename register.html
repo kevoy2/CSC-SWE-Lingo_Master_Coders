@@ -10,9 +10,9 @@
 <body>
     <!-- Main Navigation Links -->
     <nav class="top-nav">
-        <button id="menu-toggle" class="menu-btn">
+        <!-- <button id="menu-toggle" class="menu-btn">
             <span class="menu-icon"></span>
-        </button>
+        </button> -->
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
@@ -36,12 +36,12 @@
         <!-- Registration Form -->
         <form id="registration-form">
             <input type="text" name="firstName" placeholder="First Name" required>
-            <input type="text" name="middleInitial" placeholder="Middle Initial">
-            <input type="text" name="familyName" placeholder="Family Name" required>
+            <input type="text" name="lastName" placeholder="Last Name" required>
             <input type="date" name="dob" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
             <select name="language">
+                <option value="">Select Language</option>
                 <option value="en">English</option>
                 <option value="es">Spanish</option>
                 <option value="fr">French</option>
@@ -58,10 +58,8 @@
                 <option value="tr">Turkish</option>
                 <option value="uk">Ukrainian</option>
             </select>
-            <div class="button-group">
-                <button type="submit" class="register">Register</button>
-                <button type="button" class="cancel" onclick="window.location.href='index.html'">Cancel</button>
-            </div>
+            <button type="submit" class="register">Register</button>
+            
         </form>
 
         <p class="form-footer">

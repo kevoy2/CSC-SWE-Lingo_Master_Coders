@@ -19,7 +19,7 @@ const pool = new Pool({
 // Registration endpoint
 app.post('/register', async (req, res) => {
     console.log('Received registration data:', req.body);
-    const { firstName, middleInitial, familyName, dob, email, password, language } = req.body;
+    const { firstName, lastName, dob, email, password, language } = req.body;
     
     try {
         // Hash the password
@@ -37,13 +37,13 @@ app.post('/register', async (req, res) => {
 
         // Insert into user_profiles
         const profileResult = await pool.query(
-            'INSERT INTO user_profiles (first_name, middle_initial, family_name, dob, age, email, password, language) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING profile_id',
-            [firstName, middleInitial, familyName, dob, age, email, hashedPassword, language]
+            'INSERT INTO user_profiles (first_name, last_name, dob, age, email, password, language) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+            [firstName, lastName, dob, age, email, hashedPassword, language]
         );
 
-        const profileId = profileResult.rows[0].profile_id;
+        const profileId = profileResult.rows[0].id;
 
-        // Insert into users table (previously misnamed as user_login)
+        // Insert into users table 
         await pool.query(
             'INSERT INTO users (profile_id, email, password) VALUES ($1, $2, $3)',
             [profileId, email, hashedPassword]
@@ -81,6 +81,7 @@ app.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Error logging in', error: error.message });
     }
 });
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
