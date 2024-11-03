@@ -1,5 +1,5 @@
+const { createClient } = require('@supabase/supabase-js');
 const express = require('express');
-const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 require('dotenv').config();
@@ -8,13 +8,60 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const pool = new Pool({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    database: process.env.DB_NAME,
-});
+// Get your Supabase connection details from environment variables
+const supabaseUrl = process.env.DB_URL;
+const supabaseAnonKey = process.env.DB_API;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Necessary functions
+async function insertProfile(table, pattern) {
+    try {
+        const { data, error } = await supabase
+            .from(table)
+            .insert(pattern);
+
+        if (error) {
+            throw error;
+        }
+
+        console.log('User inserted:', data);
+    } catch (error) {
+        console.error('Error inserting user:', error);
+    }
+}
+
+async function insertUser(table, email, password, match) {
+    try {
+        let fk = await fetchValue('user_profiles', 'id', match);
+        console.log('FK recieved:', fk[0].id);
+        const { data, error } = await supabase
+            .from(table)
+            .insert({ email: email, password: password, profile_id: fk[0].id });
+        if (error) {
+            throw error;
+        }
+
+        console.log('User inserted:', data);
+    } catch (error) {
+        console.error('Error inserting user:', error);
+    }
+}
+
+async function fetchValue(table, target, match) {
+    try {
+        const { data, error } = await supabase
+            .from(table)
+            .select(target)
+            .match(match);
+        if (error) {
+            throw error;
+        }
+        console.log('FK fetched:', data);
+        return data;
+    } catch (error) {
+        console.error('Error inserting user:', error);
+    }
+}
 
 // Registration endpoint
 app.post('/register', async (req, res) => {
@@ -35,19 +82,13 @@ app.post('/register', async (req, res) => {
             age--;
         }
 
-        // Insert into user_profiles
-        const profileResult = await pool.query(
-            'INSERT INTO user_profiles (first_name, last_name, dob, age, email, password, language) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-            [firstName, lastName, dob, age, email, hashedPassword, language]
-        );
+        // Initialize pattern
+        let pattern = { first_name: firstName, last_name: lastName, dob: dob, age: age, email: email, password: hashedPassword, language: language };
 
-        const profileId = profileResult.rows[0].id;
-
-        // Insert into users table 
-        await pool.query(
-            'INSERT INTO users (profile_id, email, password) VALUES ($1, $2, $3)',
-            [profileId, email, hashedPassword]
-        );
+        // Insert user profile into user_profiles table
+        await insertProfile('user_profiles', pattern);
+        // Insert user into users table
+        await insertUser('users', email, hashedPassword, pattern);
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
@@ -61,10 +102,10 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        const result = await fetchValue('users', '', { email: email });
         
-        if (result.rows.length > 0) {
-            const user = result.rows[0];
+        if (result.length > 0) {
+            const user = result[0];
             const passwordString = String(password);
             const isMatch = await bcrypt.compare(passwordString, user.password);
             
