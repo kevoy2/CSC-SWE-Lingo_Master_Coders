@@ -8,60 +8,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Get your Supabase connection details from environment variables
+// Supabase client initialization
 const supabaseUrl = process.env.DB_URL;
 const supabaseAnonKey = process.env.DB_API;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Necessary functions
-async function insertProfile(table, pattern) {
-    try {
-        const { data, error } = await supabase
-            .from(table)
-            .insert(pattern);
-
-        if (error) {
-            throw error;
-        }
-
-        console.log('User inserted:', data);
-    } catch (error) {
-        console.error('Error inserting user:', error);
-    }
-}
-
-async function insertUser(table, email, password, match) {
-    try {
-        let fk = await fetchValue('user_profiles', 'id', match);
-        console.log('FK recieved:', fk[0].id);
-        const { data, error } = await supabase
-            .from(table)
-            .insert({ email: email, password: password, profile_id: fk[0].id });
-        if (error) {
-            throw error;
-        }
-
-        console.log('User inserted:', data);
-    } catch (error) {
-        console.error('Error inserting user:', error);
-    }
-}
-
-async function fetchValue(table, target, match) {
-    try {
-        const { data, error } = await supabase
-            .from(table)
-            .select(target)
-            .match(match);
-        if (error) {
-            throw error;
-        }
-        console.log('FK fetched:', data);
-        return data;
-    } catch (error) {
-        console.error('Error inserting user:', error);
-    }
-}
 
 // Registration endpoint
 app.post('/register', async (req, res) => {
@@ -70,8 +20,8 @@ app.post('/register', async (req, res) => {
     
     try {
         // Hash the password
-        const passwordstr = String(password);
-        const hashedPassword = await bcrypt.hash(passwordstr, 10);
+        const passwordStr = String(password);
+        const hashedPassword = await bcrypt.hash(passwordStr, 10);
         
         // Calculate age
         const birthDate = new Date(dob);
@@ -82,18 +32,38 @@ app.post('/register', async (req, res) => {
             age--;
         }
 
-        // Initialize pattern
-        let pattern = { first_name: firstName, last_name: lastName, dob: dob, age: age, email: email, password: hashedPassword, language: language };
+        // Create user profile with all necessary data
+        const { data: profileData, error: profileError } = await supabase
+            .from('user_profiles')
+            .insert({
+                first_name: firstName,
+                last_name: lastName,
+                dob: dob,
+                age: age,
+                email: email,
+                password: hashedPassword,
+                language: language
+            })
+            .select();
 
-        // Insert user profile into user_profiles table
-        await insertProfile('user_profiles', pattern);
-        // Insert user into users table
-        await insertUser('users', email, hashedPassword, pattern);
+        if (profileError) {
+            throw profileError;
+        }
 
-        res.status(201).json({ message: 'User registered successfully' });
+        // The users table entry will be automatically created by the trigger
+        // No need to manually insert into the users table
+
+        res.status(201).json({ 
+            message: 'User registered successfully',
+            profile: profileData[0]
+        });
+
     } catch (error) {
-        console.error('Detailed error:', error);
-        res.status(500).json({ message: 'Error registering user', error: error.message });
+        console.error('Registration error:', error);
+        res.status(500).json({ 
+            message: 'Error registering user', 
+            error: error.message 
+        });
     }
 });
 
@@ -102,27 +72,51 @@ app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const result = await fetchValue('users', '', { email: email });
+        // Get the user profile with its associated user data
+        const { data: profileData, error: profileError } = await supabase
+            .from('user_profiles')
+            .select(`
+                id,
+                first_name,
+                last_name,
+                email,
+                password,
+                language
+            `)
+            .eq('email', email)
+            .single();
+
+        if (profileError) {
+            console.error('Profile fetch error:', profileError);
+            return res.status(400).json({ message: 'User not found' });
+        }
+
+        if (!profileData) {
+            return res.status(400).json({ message: 'User not found' });
+        }
+
+        // Compare passwords
+        const isMatch = await bcrypt.compare(String(password), profileData.password);
         
-        if (result.length > 0) {
-            const user = result[0];
-            const passwordString = String(password);
-            const isMatch = await bcrypt.compare(passwordString, user.password);
+        if (isMatch) {
+            // Return user data without the password
+            const { password: _, ...userDataWithoutPassword } = profileData;
             
-            if (isMatch) {
-                res.json({ message: 'Login successful', profileId: user.profile_id });
-            } else {
-                res.status(400).json({ message: 'Invalid credentials' });
-            }
+            res.json({ 
+                message: 'Login successful',
+                profile: userDataWithoutPassword
+            });
         } else {
-            res.status(400).json({ message: 'User not found' });
+            res.status(400).json({ message: 'Invalid credentials' });
         }
     } catch (error) {
         console.error('Login error:', error);
-        res.status(500).json({ message: 'Error logging in', error: error.message });
+        res.status(500).json({ 
+            message: 'Error logging in', 
+            error: error.message 
+        });
     }
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
