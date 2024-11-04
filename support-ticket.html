@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Ticket - LingoScape</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1>Support Ticket</h1>
+        <p>If you're experiencing an issue or have a question, please fill out the form below.</p>
+
+        <form id="support-ticket-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+
+            <label for="category">Category:</label>
+            <select id="category" name="category" required>
+                <option value="">--Select Category--</option>
+                <option value="technical">Technical Issue</option>
+                <option value="account">Account</option>
+                <option value="general">General Inquiry</option>
+            </select>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Describe your issue or question" required></textarea>
+
+            <button type="submit">Submit Ticket</button>
+        </form>
+    </main>
+
+    <footer>
+        &#xA9; 2024 LingoScape. All rights reserved.
+    </footer>
+
+    <script>
+        document.getElementById('support-ticket-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const ticketData = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('http://localhost:3000/support-ticket', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(ticketData),
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Support ticket submitted successfully!');
+                    e.target.reset();
+                } else {
+                    alert(`Error: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('An error occurred while submitting the ticket.');
+            }
+        });
+    </script>
+</body>
+</html>
