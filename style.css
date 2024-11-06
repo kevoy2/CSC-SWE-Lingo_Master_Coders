@@ -511,3 +511,111 @@ textarea {
         margin-bottom: 60px;
     }
 }
+
+/* styling for video conference */
+
+.video-conference {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+video {
+    width: 45%;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+}
+
+.language-selection, .conference-controls {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+}
+
+#captions {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Styling for Scheduling Section */
+.conference-scheduling {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.conference-scheduling h2 {
+    margin-bottom: 10px;
+}
+
+.conference-scheduling label {
+    margin-right: 10px;
+}
+
+.conference-scheduling input[type="date"],
+.conference-scheduling input[type="time"] {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.conference-scheduling button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.conference-scheduling button:hover {
+    background-color: #0056b3;
+}
+
+/* Styling for Participants Invitation Section */
+.invite-participants {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.invite-participants h2 {
+    margin-bottom: 10px;
+}
+
+.invite-participants input[type="email"] {
+    padding: 5px;
+    margin-right: 10px;
+    width: 250px;
+}
+
+.invite-participants button {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.invite-participants button:hover {
+    background-color: #218838;
+}
+
+.invite-participants ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.invite-participants ul li {
+    padding: 5px 0;
+    font-size: 14px;
+}
