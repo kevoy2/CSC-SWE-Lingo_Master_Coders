@@ -67,6 +67,7 @@ app.post('/register', async (req, res) => {
     }
 });
 
+
 // Login endpoint
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -117,6 +118,68 @@ app.post('/login', async (req, res) => {
         });
     }
 });
+
+
+// Chat History endpoint 
+app.post('/save-translation', async (req, res) => {
+    const { userId, originLangCode, targetLangCode, sourceText, targetText } = req.body;
+
+    try {
+        const { data, error } = await supabase
+            .from('chat_history')
+            .insert({
+                user_id: userId,
+                origin_lang_code: originLangCode,
+                target_lang_code: targetLangCode,
+                source_text: sourceText,
+                target_text: targetText
+            })
+            .select();
+
+        if (error) throw error;
+
+        res.status(201).json({
+            message: 'Translation saved successfully',
+            translation: data[0]
+        });
+    } catch (error) {
+        console.error('Error saving translation:', error);
+        res.status(500).json({
+            message: 'Error saving translation',
+            error: error.message
+        });
+    }
+});
+
+
+// Favorite Phrase endpoint
+app.post('/save-favorite', async (req, res) => {
+    const { userId, translationId } = req.body;
+
+    try {
+        const { data, error } = await supabase
+            .from('favorite_phrases')
+            .insert({
+                user_id: userId,
+                translation_id: translationId
+            })
+            .select();
+
+        if (error) throw error;
+
+        res.status(201).json({
+            message: 'Translation saved to favorites successfully',
+            favorite: data[0]
+        });
+    } catch (error) {
+        console.error('Error saving favorite:', error);
+        res.status(500).json({
+            message: 'Error saving to favorites',
+            error: error.message
+        });
+    }
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
