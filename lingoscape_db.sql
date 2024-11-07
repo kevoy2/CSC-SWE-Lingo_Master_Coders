@@ -243,78 +243,48 @@ CREATE POLICY "Languages are publicly readable"
 --     WITH CHECK (email IN (SELECT email FROM users WHERE role = 'admin'));
 
 -- Chat history policies
-CREATE POLICY "Chat history viewable by owner"
-    ON chat_history FOR SELECT
+CREATE POLICY "Chat history viewable by anyone"
+    ON chat_history 
+    FOR SELECT
     TO public
-    USING (
-        user_id IN (
-            SELECT id 
-            FROM user_profiles 
-            WHERE id IN (
-                SELECT profile_id 
-                FROM users 
-                WHERE email = current_user
-            )
-        )
-    );
+    USING (true);
 
-CREATE POLICY "Chat history insertable by owner"
-    ON chat_history FOR INSERT
+CREATE POLICY "Chat history insertable by anyone"
+    ON chat_history
+    FOR INSERT 
     TO public
-    WITH CHECK (
-        user_id IN (
-            SELECT id 
-            FROM user_profiles 
-            WHERE id IN (
-                SELECT profile_id 
-                FROM users 
-                WHERE email = current_user
-            )
-        )
-    );
+    WITH CHECK (true);
 
-CREATE POLICY "Chat history updatable by owner"
-    ON chat_history FOR UPDATE
+CREATE POLICY "Chat history updatable by anyone"
+    ON chat_history 
+    FOR UPDATE
     TO public
-    USING (
-        user_id IN (
-            SELECT id 
-            FROM user_profiles 
-            WHERE id IN (
-                SELECT profile_id 
-                FROM users 
-                WHERE email = current_user
-            )
-        )
-    );
+    USING (true);
 
 -- Favorite phrases policies
-CREATE POLICY "Favorite phrases manageable by owner"
-    ON favorite_phrases
-    FOR ALL
+CREATE POLICY "Favorite phrases viewable by anyone"
+    ON favorite_phrases 
+    FOR SELECT
     TO public
-    USING (
-        user_id IN (
-            SELECT id 
-            FROM user_profiles 
-            WHERE id IN (
-                SELECT profile_id 
-                FROM users 
-                WHERE email = current_user
-            )
-        )
-    )
-    WITH CHECK (
-        user_id IN (
-            SELECT id 
-            FROM user_profiles 
-            WHERE id IN (
-                SELECT profile_id 
-                FROM users 
-                WHERE email = current_user
-            )
-        )
-    );
+    USING (true);
+
+CREATE POLICY "Favorite phrases insertable by anyone"
+    ON favorite_phrases
+    FOR INSERT 
+    TO public
+    WITH CHECK (true);
+
+CREATE POLICY "Favorite phrases updatable by anyone"
+    ON favorite_phrases 
+    FOR UPDATE
+    TO public
+    USING (true);
+
+CREATE POLICY "Favorite phrases deletable by anyone"
+    ON favorite_phrases 
+    FOR DELETE
+    TO public
+    USING (true);
 
 -- Emergency phrases policies
 CREATE POLICY "Emergency phrases are publicly readable"
