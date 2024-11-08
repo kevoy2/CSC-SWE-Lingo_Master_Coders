@@ -33,6 +33,11 @@ CREATE TABLE "user_profiles" (
     "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Modify user_profiles table
+ALTER TABLE user_profiles
+ADD COLUMN auth_id UUID,
+ADD COLUMN email_verified BOOLEAN DEFAULT FALSE;
+
 -- Users table for authentication
 CREATE TABLE "users" (
     "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -43,12 +48,15 @@ CREATE TABLE "users" (
     "updated_at" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE "users"
+ADD COLUMN auth_id UUID;
+
 -- Create trigger to automatically create users entry after user_profiles
 CREATE OR REPLACE FUNCTION create_user_after_profile()
 RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO users (profile_id, email, password)
-    VALUES (NEW.id, NEW.email, NEW.password); 
+    INSERT INTO users (profile_id, email, password, auth_id)
+    VALUES (NEW.id, NEW.email, NEW.password, NEW.auth_id); 
     RETURN NEW;
 END;
 $$ language 'plpgsql';
@@ -172,11 +180,27 @@ CREATE POLICY "Profiles are insertable by anyone"
     TO public 
     WITH CHECK (true);
 
-CREATE POLICY "Profiles are viewable by authenticated users"
+-- CREATE POLICY "Profiles are viewable by authenticated users"
+--     ON user_profiles 
+--     FOR SELECT 
+--     TO public 
+--     USING (true);
+
+-- Update the policies for email verification
+CREATE POLICY "Profiles are viewable by verified users"
     ON user_profiles 
     FOR SELECT 
     TO public 
-    USING (true);
+    USING (
+        email_verified = TRUE 
+        OR 
+        EXISTS (
+            SELECT 1 
+            FROM users 
+            WHERE profile_id = user_profiles.id 
+            AND email = current_user
+        )
+    );
 
 CREATE POLICY "Profiles are updatable by owner"
     ON user_profiles 
@@ -454,3 +478,6 @@ CREATE INDEX idx_support_tickets_user_id ON support_tickets(user_id);
 CREATE INDEX idx_video_conferences_user_id ON video_conferences(user_id);
 CREATE INDEX idx_user_settings_user_id ON user_settings(user_id);
 
+-- Add index for auth_id
+CREATE INDEX idx_user_profiles_auth_id ON user_profiles(auth_id);
+CREATE INDEX idx_users_auth_id ON users(auth_id);

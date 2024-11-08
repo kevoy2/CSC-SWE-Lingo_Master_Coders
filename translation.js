@@ -118,8 +118,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function saveTranslation(sourceText, targetText, sourceLang, targetLang) {
         const userId = localStorage.getItem('userId');
+        const session = localStorage.getItem('session');
         
-        if (!userId) {
+        if (!userId || !session) {
             console.error('User not logged in');
             return null;
         }
@@ -131,21 +132,26 @@ document.addEventListener('DOMContentLoaded', function() {
             sourceText: sourceText,
             targetText: targetText
         };
-
+    
         try {
             const response = await fetch('http://localhost:3000/save-translation', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session}`
                 },
                 body: JSON.stringify(translationData)
             });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to save translation');
+            }
             
             const data = await response.json();
             console.log('Translation saved:', data);
             
             if (data.translation && data.translation.id) {
-                // Store the translation ID in the favorite button's dataset
                 if (favoriteButton) {
                     favoriteButton.dataset.translationId = data.translation.id;
                     favoriteButton.classList.remove('active');
@@ -188,8 +194,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function saveFavorite(translationId) {
         const userId = localStorage.getItem('userId');
+        const session = localStorage.getItem('session');
         
-        if (!userId) {
+        if (!userId || !session) {
             alert('Please log in to save favorites');
             return;
         }
@@ -198,14 +205,15 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Please translate text before adding to favorites');
             return;
         }
-
+    
         console.log('Saving favorite with translationId:', translationId);
     
         try {
             const response = await fetch('http://localhost:3000/save-favorite', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session}`
                 },
                 body: JSON.stringify({
                     userId: userId,
@@ -213,6 +221,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
             });
             
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to save favorite');
+            }
+    
             const data = await response.json();
             console.log('Saved to favorites:', data);
             
