@@ -219,7 +219,7 @@ function scheduleConference() {
     }
 }
 
-// Add Event Listeners for buttons
+// Add Event Listeners 
 document.addEventListener('DOMContentLoaded', function() {
     const startConferenceButton = document.getElementById('start-conference');
     const translateButton = document.getElementById('translate-button');
