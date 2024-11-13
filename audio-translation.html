@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speech to Text Translation</title>
+    <title>Speech to Text Translation - LingoScape</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
+    <!-- Main Navigation Links -->
     <nav class="top-nav">
         <button id="menu-toggle" class="menu-btn">
             <span class="menu-icon"></span>
@@ -20,29 +19,37 @@
             <a href="contact.html">Contact</a>
         </div>
     </nav>
+    <!-- Side Menu -->
+    <div id="side-menu" class="side-menu">
+        <a href="text-translation.html">Text Translation</a>
+        <a href="video-conference.html">Video Conference</a>
+        <a href="support-ticket.html">Support Ticket</a>
+        <a href="index.html">Log Out</a>
+    </div>
 
-    <main class="container" role="main">
+    <div class="container" role="main">
         <h1>Speech to Text Translation</h1>
+        
         <div class="translation-box">
-    
             <div class="textarea-wrapper">
-                <textarea id="source-text" placeholder="Speech will appear here" maxlength="1000"></textarea>
+                <textarea id="source-text" placeholder="Click 'Start Recording' to begin" readonly></textarea>
+                <div class="star-icon favorite-button" id="favorite-button" title="Add to favorites">★</div>
                 <div class="textarea-controls">
-                    <button class="icon-button" onclick="startSpeechRecognition()" aria-label="Start Speech Recognition">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                    <button class="icon-button" id="clear-text" onclick="clearText()" aria-label="Clear text">CLEAR</button>
+                    <div class="left-controls">
+                        <button class="icon-button" id="source-volume" aria-label="Read text aloud"><i class="fas fa-volume-up"></i></button>
+                        <button class="icon-button" id="clear-text" aria-label="Clear text">CLEAR</button>
+                    </div>
+                    <div id="char-count">0/1000</div>
                 </div>
-                <div id="char-count">0/1000</div>
             </div>
 
             <div class="language-selection">
-       
+                <!-- Source Language Dropdown -->
                 <select id="source-language">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
-                    <option value="zh-CN">Chinese Simplified</option>
+                    <option value="zh-cn">Chinese Simplified</option>
                     <option value="ar">Arabic</option>
                     <option value="ru">Russian</option>
                     <option value="de">German</option>
@@ -55,12 +62,19 @@
                     <option value="tr">Turkish</option>
                     <option value="uk">Ukrainian</option>
                 </select>
-    
+
+                <!-- Language Swap Button -->
+                <button id="swap-languages" aria-label="Swap languages">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 16L3 12M3 12L7 8M3 12H21M17 8L21 12M21 12L17 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
                 <select id="target-language">
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
-                    <option value="zh-CN">Chinese Simplified</option>
+                    <option value="zh">Chinese Simplified</option>
                     <option value="ar">Arabic</option>
                     <option value="ru">Russian</option>
                     <option value="de">German</option>
@@ -74,76 +88,29 @@
                     <option value="uk">Ukrainian</option>
                 </select>
             </div>
-
-            <button id="translate-button" onclick="translateText()">Translate</button>
+            <div class="button-group">
+                <button id="record-button" class="record-button">Start Recording</button>
+                <button id="translate-button">Translate</button>
+            </div>
 
             <div class="textarea-wrapper">
                 <textarea id="translated-text" readonly placeholder="Translation will appear here"></textarea>
+                <div class="textarea-controls">
+                    <div class="left-controls">
+                        <button class="icon-button" id="target-volume" aria-label="Read translation aloud"><i class="fas fa-volume-up"></i></button>
+                        <button class="icon-button" id="target-copy" aria-label="Copy translation"><i class="fas fa-copy"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <footer>
         &#xA9; 2024 LingoScape. All rights reserved.
     </footer>
 
-    <script>
-    
-        let recognition;
-
-        function startSpeechRecognition() {
-            if (!('webkitSpeechRecognition' in window)) {
-                alert("Sorry, your browser doesn't support speech recognition.");
-                return;
-            }
-
-            recognition = new webkitSpeechRecognition();
-            recognition.lang = document.getElementById('source-language').value;
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                document.getElementById('source-text').value = transcript;
-                updateCharCount();
-                translateText(); 
-            };
-
-            recognition.onerror = (event) => {
-                console.error('Speech recognition error:', event);
-                alert('Speech recognition error');
-            };
-
-            recognition.start();
-        }
-
-        function updateCharCount() {
-            const sourceText = document.getElementById('source-text').value;
-            document.getElementById('char-count').textContent = `${sourceText.length}/1000`;
-        }
-
-        function clearText() {
-            document.getElementById('source-text').value = '';
-            document.getElementById('translated-text').value = '';
-            updateCharCount();
-        }
-
-        function translateText() {
-            const sourceText = document.getElementById('source-text').value;
-            const fromLang = document.getElementById('source-language').value;
-            const toLang = document.getElementById('target-language').value;
-            const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(sourceText)}&langpair=${fromLang}|${toLang}`;
-
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('translated-text').value = data.responseData.translatedText;
-                })
-                .catch(error => {
-                    console.error('Translation error:', error);
-                    document.getElementById('translated-text').value = 'Error: Could not translate text';
-                });
-        }
-    </script>
+    <script src="menu-toggle.js"></script>
+    <script src="translation.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </body>
 </html>

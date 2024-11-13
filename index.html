@@ -9,23 +9,12 @@
 </head>
 <body>
     <nav class="top-nav">
-        <!-- <button id="menu-toggle" class="menu-btn">
-            <span class="menu-icon"></span>
-        </button> -->
-        <!-- Main Navigation Links -->
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
         </div>
     </nav>
-    <!-- Side Menu -->
-    <div id="side-menu" class="side-menu">
-        <a href="translation.html">Translation</a>
-        <a href="video-conference.html">Video Conference</a>
-        <a href="register.html">Register</a>
-        <a href="support-ticket.html">Support Ticket</a>
-    </div>
 
     <main class="container">
         <h1>LingoScape</h1>
@@ -52,8 +41,6 @@
         &#xA9; 2024 LingoScape. All rights reserved.
     </footer>
 
-    <script src="menu-toggle.js"></script>
-
     <script>
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -72,6 +59,10 @@
                 const data = await response.json();
                 console.log('Server response:', data);
                 if (response.ok) {
+                    // Store user ID and email in localStorage
+                    localStorage.setItem('userId', data.profile.id);
+                    localStorage.setItem('userEmail', data.profile.email);
+                    localStorage.setItem('session', data.session.access_token);
                     alert('Login successful!');
                     window.location.href = 'translation.html';
                 } else {

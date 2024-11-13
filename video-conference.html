@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Conference - LingoScape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Navigation Links -->
+    <nav class="top-nav">
+        <button id="menu-toggle" class="menu-btn">
+            <span class="menu-icon"></span>
+        </button>
+        <div class="nav-links">
+            <a href="translation.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+    
+    <!-- Video Conference Section -->
+    <main class="container" role="main">
+        <h1>Video Conference Tool</h1>
+
+        <!-- Video Elements for Conference -->
+        <div class="video-conference">
+            <video id="localVideo" autoplay muted></video>
+            <video id="remoteVideo" autoplay></video>
+        </div>
+
+        <!-- Language Selection -->
+        <div class="language-selection">
+            <label for="input-language">Your Language:</label>
+            <select id="input-language">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="zh-cn">Chinese Simplified</option>
+                <option value="ar">Arabic</option>
+                <option value="ru">Russian</option>
+                <option value="de">German</option>
+                <option value="pt">Portuguese</option>
+                <option value="hi">Hindi</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="it">Italian</option>
+                <option value="nl">Dutch</option>
+                <option value="tr">Turkish</option>
+                <option value="uk">Ukrainian</option>
+            </select>
+
+            <label for="output-language">Translate to:</label>
+            <select id="output-language">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="zh-cn">Chinese Simplified</option>
+                <option value="ar">Arabic</option>
+                <option value="ru">Russian</option>
+                <option value="de">German</option>
+                <option value="pt">Portuguese</option>
+                <option value="hi">Hindi</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="it">Italian</option>
+                <option value="nl">Dutch</option>
+                <option value="tr">Turkish</option>
+                <option value="uk">Ukrainian</option>
+            </select>
+        </div>
+
+        <!-- Scheduling Section -->
+        <div class="scheduling-section">
+            <h2>Schedule Conference</h2>
+            <label for="conferenceDate">Date:</label>
+            <input type="date" id="conferenceDate">
+            <label for="conferenceTime">Time:</label>
+            <input type="time" id="conferenceTime">
+            <button id="scheduleConference" onclick="scheduleConference()">Schedule</button>
+        </div>
+
+        <!-- Invite Participants Section -->
+        <div class="invite-participants">
+            <h2>Invite Participants</h2>
+            <label for="participantEmail">Participant Email:</label>
+            <input type="email" id="participantEmail" placeholder="Enter email">
+            <button onclick="inviteParticipant()">Invite</button>
+            <div id="participantsList">
+                <h3>Participants</h3>
+                <ul id="participants"></ul>
+            </div>
+        </div>
+
+        <!-- Conference Controls -->
+        <div class="conference-controls">
+            <button id="startConference" onclick="startConference()">Start Conference</button>
+            <button id="endConference" onclick="endConference()">End Conference</button>
+            <button id="muteButton" onclick="toggleMute()">Mute/Unmute</button>
+        </div>
+
+        <!-- Live Captions -->
+        <div id="captions" class="captions-box">
+            <p id="translatedText">Translations will appear here...</p>
+        </div>
+    </main>
+
+    <script src="videoConference.js"></script>
+</body>
+</html>

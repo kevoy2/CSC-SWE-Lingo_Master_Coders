@@ -64,11 +64,6 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* Button Styles */
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
 
 button {
     width: 48%;
@@ -369,11 +364,50 @@ textarea {
     border-radius: 6px;
     font-size: 18px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease, transform 0.2s;
 }
 
 #translate-button:hover {
     background-color: #16A085;
+    transform: scale(1.02);
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.button-group button {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.button-group #record-button {
+    background-color: #1ABC9C;
+    color: white;
+}
+
+.button-group #translate-button {
+    background-color: #1ABC9C;
+    color: white;
+    margin-top: 0;
+    width: auto;
+}
+
+.button-group button:hover {
+    background-color: #16A085;
+    transform: scale(1.02);
+}
+
+.button-group #record-button.recording {
+    background-color: #e74c3c;
 }
 
 .translation-options {
@@ -396,6 +430,20 @@ textarea {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.favorite-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+.favorite-button.active {
+    color: #FFD700; 
 }
 
 .left-controls {
@@ -435,6 +483,7 @@ textarea {
     color: #ce311f;
 }
 
+
 /* Responsive Styles */
 @media (max-width: 600px) {
     .translation-box {
@@ -460,6 +509,15 @@ textarea {
 
     textarea {
         padding-bottom: 40px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .button-group button {
+        width: 100%;
     }
 }
 
