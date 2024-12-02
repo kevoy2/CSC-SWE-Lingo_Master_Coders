@@ -34,4 +34,4 @@
 15. Feature #15
     
 # Web Application Dependencies:
-You will need the .env file for the web application to connect to the Supabase database. However, it is not available through our GitHub repository. 
+You will need the .env file for the web application to connect to the Supabase database. The .env file is not available through our GitHub repository. However, it will be included in the zip file for the final submission.
