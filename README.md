@@ -18,20 +18,20 @@
 
 # Web Application Features:
 1. User Registration
-2. User Login/Logout
-3. Profile Management
+2. User Login/Logout (In-Progress)
+3. Profile Management (In-Progress)
 4. Text Input
-5. Video Conference Tool Integration
+5. Video Conference Tool Integration (In-Progress)
 6. Speech-to-Text Conversion
 7. Text-to-Text Translation
 8. Text-to-Speech Conversion
 9. Translated Text Display
-10. Live Translation
+10. Live Translation (In-Progress)
 11. Language Database/API
 12. User Information Database 
 13. Language Pair Selection
 14. Reactive Website
-15. Website Settings
+15. Website Settings (In-Progress)
     
 # Web Application Dependencies:
 You will need the .env file for the web application to connect to the Supabase database. The .env file is not available through our GitHub repository. However, it will be included in the zip file for the final submission.
