@@ -17,21 +17,21 @@
 10. Start by opening the 'index.html' file if you are running the entire application.
 
 # Web Application Features: (Names are currently place holders)
-1. Feature #1
-2. Feature #2
-3. Feature #3
-4. Feature #4
-5. Feature #5
-6. Feature #6
-7. Feature #7
-8. Feature #8
-9. Feature #9
-10. Feature #10
-11. Feature #11
-12. Feature #12
-13. Feature #13
-14. Feature #14
-15. Feature #15
+1. User Registration
+2. User Login/Logout
+3. Profile Management
+4. Text Input
+5. Video Conference Tool Integration
+6. Speech-to-Text Conversion
+7. Text-to-Text Translation
+8. Text-to-Speech Conversion
+9. Translated Text Display
+10. Live Translation
+11. Language Database/API
+12. User Information Database 
+13. Language Pair Selection
+14. Reactive Website
+15. Website Settings
     
 # Web Application Dependencies:
 You will need the .env file for the web application to connect to the Supabase database. The .env file is not available through our GitHub repository. However, it will be included in the zip file for the final submission.
