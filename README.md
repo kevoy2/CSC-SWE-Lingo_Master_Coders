@@ -16,7 +16,7 @@
 9. Start the local host using 'node server.js' where the file is stored utilizing the command prompt.
 10. Start by opening the 'index.html' file if you are running the entire application.
 
-# Web Application Features: (Names are currently place holders)
+# Web Application Features:
 1. User Registration
 2. User Login/Logout
 3. Profile Management
