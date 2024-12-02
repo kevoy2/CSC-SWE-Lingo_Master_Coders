@@ -16,4 +16,22 @@
 9. Start the local host using 'node server.js' where the file is stored utilizing the command prompt.
 10. Start by opening the 'index.html' file if you are running the entire application.
 
-Note: you will need the .env file to run the web application. Since it is not available through GitHub. 
+# Web Application Features: (Names are currently place holders)
+1. Feature #1
+2. Feature #2
+3. Feature #3
+4. Feature #4
+5. Feature #5
+6. Feature #6
+7. Feature #7
+8. Feature #8
+9. Feature #9
+10. Feature #10
+11. Feature #11
+12. Feature #12
+13. Feature #13
+14. Feature #14
+15. Feature #15
+    
+# Web Application Dependencies:
+You will need the .env file for the web application to connect to the Supabase database. However, it is not available through our GitHub repository. 
