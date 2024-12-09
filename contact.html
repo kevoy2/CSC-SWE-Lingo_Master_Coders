@@ -6,6 +6,15 @@
     <title>Contact Us - LingoScape</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+    (function(){
+    emailjs.init("jUl1t6PYERh25OkEr");
+    })();
+    </script>
+    <script src="contact.js"></script>
 </head>
 <body>
     <nav class="top-nav">
@@ -35,7 +44,7 @@
             <label for="message">Message:</label>
             <textarea id="message" name="message" placeholder="Your Message" required></textarea>
 
-            <button type="submit">Send Message</button>
+            <button type="submit" onclick="sendEmail()">Send Message</button>
         </form>
     </div>
     <footer>
