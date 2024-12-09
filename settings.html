@@ -24,7 +24,7 @@
         <a href="translation.html">Translation</a>
         <a href="video-conference.html">Video Conference</a>
         <a href="support-ticket.html">Support Ticket</a>
-        <a href="settings.html">Settings</a>
+        <a href="profile-management.html">Profile Management</a>
         <a href="index.html">Log Out</a>
     </div>
 
@@ -35,10 +35,12 @@
             <img src="LingoScape_logo.jpg" alt="LingoScape Logo" class="ls-logo">
         </div>
         <!-- Registration Form -->
-        <form id="management-form">
-            <input type="text" name="firstName" placeholder="First Name">
-            <input type="text" name="lastName" placeholder="Last Name">
-            <input type="date" name="dob">
+        <form id="setting-form">
+            <select name="theme">
+                <option value="">Select Theme</option>
+                <option value=true>Light Mode</option>
+                <option value=false>Dark Mode</option>
+            </select>
             <select name="language">
                 <option value="">Select Language</option>
                 <option value="en">English</option>
@@ -68,30 +70,30 @@
     <script src="menu-toggle.js"></script>
 
     <script>
-        document.getElementById('management-form').addEventListener('submit', async (e) => {
+        document.getElementById('setting-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const userData = Object.fromEntries(formData.entries());
+            const settingData = Object.fromEntries(formData.entries());
         
             try {
-                const response = await fetch('http://localhost:3000/profile-management', {
+                const response = await fetch('http://localhost:3000/setting', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(userData),
+                    body: JSON.stringify(settingData),
                 });
                 const data = await response.json();
                 console.log('Server response:', data);
                 if (response.ok) {
-                    alert('Profile management was successful!');
-                    window.location.href = 'index.html';
+                    alert('Selction of settings was successful!');
+                    window.location.href = 'translation.html';
                 } else {
-                    alert(`Profile management failed: ${data.message}`);
+                    alert(`Settings failed: ${data.message}`);
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
-                alert('An error occurred during profile management.');
+                alert('An error occurred during setting selection.');
             }
         });
     </script>

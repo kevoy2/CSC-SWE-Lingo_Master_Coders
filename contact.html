@@ -6,6 +6,15 @@
     <title>Contact Us - LingoScape</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+    (function(){
+    emailjs.init({ publicKey: "jUl1t6PYERh25OkEr", });
+    })();
+    </script>
+    <script src="contact.js"></script>
 </head>
 <body>
     <nav class="top-nav">
@@ -35,39 +44,11 @@
             <label for="message">Message:</label>
             <textarea id="message" name="message" placeholder="Your Message" required></textarea>
 
-            <button type="submit">Send Message</button>
+            <button type="submit" onclick="sendEmail()">Send Message</button>
         </form>
     </div>
     <footer>
         &#xA9; 2024 LingoScape. All rights reserved.
     </footer>
-    
-    <script>
-        document.getElementById('contact-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            const contactData = Object.fromEntries(formData.entries());
-
-            try {
-                const response = await fetch('http://localhost:3000/contact', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(contactData),
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Contact made successfully!');
-                    e.target.reset();
-                } else {
-                    alert(`Error: ${data.message}`);
-                }
-            } catch (error) {
-                console.error('Fetch error:', error);
-                alert('An error occurred while making contact.');
-            }
-        });
-    </script>
 </body>
 </html>
