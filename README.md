@@ -46,7 +46,7 @@ Create a `.env` file in the project root with the following variables:
 DB_URL=[supabase-project-url]
 DB_API=[supabase-anon-key]
 SERVICE_ROLE_KEY=[supabase-service-role-key]
-APP_URL=http://localhost:5500
+APP_URL=localhost:5500
 # PORT=3000
 ```
 NB: the actual content will be provided upon request
