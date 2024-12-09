@@ -1,5 +1,4 @@
 const { createClient } = require('@supabase/supabase-js');
-const nodemailer = require('nodemailer');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
@@ -377,7 +376,7 @@ app.post('/support-ticket', async (req, res) => {
 // Password Reset endpoint
 app.post('/password-reset', async (req, res) => {
     console.log('Received password reset data:', req.body);
-    const { email, password, next, compare } = req.body;
+    const { email, next, compare } = req.body;
     try {
         if (next == compare) {
             // Get the authentication id from user_profile table
@@ -401,7 +400,7 @@ app.post('/password-reset', async (req, res) => {
             }
 
             // Update password in the user_profiles database table
-            const hashedPassword = await bcrypt.hash(String(password), 10);
+            const hashedPassword = await bcrypt.hash(String(next), 10);
             const { error: profileError } = await serviceClient
                 .from('user_profiles')
                 .update({ password: hashedPassword })
