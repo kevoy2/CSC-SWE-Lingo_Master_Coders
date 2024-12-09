@@ -41,5 +41,33 @@
     <footer>
         &#xA9; 2024 LingoScape. All rights reserved.
     </footer>
+    
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const contactData = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('http://localhost:3000/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(contactData),
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Contact made successfully!');
+                    e.target.reset();
+                } else {
+                    alert(`Error: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('An error occurred while making contact.');
+            }
+        });
+    </script>
 </body>
 </html>

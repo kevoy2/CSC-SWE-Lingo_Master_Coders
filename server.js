@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const nodemailer = require('nodemailer');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
@@ -16,6 +17,9 @@ const supabaseServiceRole = process.env.SERVICE_ROLE_KEY;
 // Create two clients - one for normal operations and one with service role
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const serviceClient = createClient(supabaseUrl, supabaseServiceRole);
+
+// Global authentication
+var authen;
 
 // Registration endpoint
 app.post('/register', async (req, res) => {
@@ -186,6 +190,8 @@ app.post('/login', async (req, res) => {
             }
         }
 
+        authen = authData.user.id;
+
         res.json({ 
             message: 'Login successful',
             profile: profileData,
@@ -278,7 +284,6 @@ app.post('/save-translation', async (req, res) => {
     }
 });
 
-
 // Favorite Phrase endpoint
 app.post('/save-favorite', async (req, res) => {
     const { userId, translationId } = req.body;
@@ -320,6 +325,186 @@ app.post('/save-favorite', async (req, res) => {
         res.status(500).json({
             message: 'Error saving to favorites',
             error: error.message
+        });
+    }
+});
+
+// Support Ticket endpoint
+app.post('/support-ticket', async (req, res) => {
+    console.log('Received password reset data:', req.body);
+    const { name, email, category, description } = req.body;
+    try {
+        // Grab the id from user profile
+        const { data: data, error: retrieveError } = await serviceClient
+            .from('user_profiles')
+            .select()
+            .eq('email', email);
+
+        if (retrieveError) {
+            throw retrieveError;
+        }
+
+        // Save the support ticket information
+        const { data: ticket, error: ticketError } = await serviceClient
+            .from('support_tickets')
+            .insert({
+                user_id: data[0].id,
+                subject: category,
+                description: description,
+                status: "In-Progress"
+            })
+            .select();
+
+        if (ticketError) {
+            throw ticketError;
+        }
+
+        // Return successful message
+        res.status(201).json({
+            message: 'Support ticket submission successfully',
+            translation: data[0]
+        });
+    } catch (error) {
+        // Return unsuccessful message
+        console.error('Support ticket submitting error:', error);
+        res.status(500).json({ 
+            message: 'Error submitting support ticket', 
+            error: error.message 
+        });
+    }
+});
+
+// Password Reset endpoint
+app.post('/password-reset', async (req, res) => {
+    console.log('Received password reset data:', req.body);
+    const { email, password, next, compare } = req.body;
+    try {
+        if (next == compare) {
+            // Get the authentication id from user_profile table
+            const { data: target, error: fetchError} = await serviceClient
+                .from('user_profiles')
+                .select()
+                .eq('email', email);
+
+            if (fetchError) {
+                throw fetchError;
+            }
+        
+            // Using auth.admin.updateUser() to update password for the standard client
+            const { data: user, error: updateError } = await serviceClient.auth.admin.updateUserById(
+                target[0].auth_id,
+                { password: next }
+              )
+
+            if (updateError) {
+                throw updateError;
+            }
+
+            // Update password in the user_profiles database table
+            const hashedPassword = await bcrypt.hash(String(password), 10);
+            const { error: profileError } = await serviceClient
+                .from('user_profiles')
+                .update({ password: hashedPassword })
+                .eq('email', email);
+
+            if (profileError) {
+                throw profileError;
+            }
+
+            // Update password in the users database table
+            const { error: userError } = await serviceClient
+                .from('users')
+                .update({ password: hashedPassword })
+                .eq('email', email);  
+        
+            if (userError) {
+                throw userError;
+            }
+
+            // Return successful message
+            res.status(201).json({
+                message: 'Password reset successfully',
+            });
+        } else {
+            // Return unsuccessful message
+            return res.status(401).json({
+                message: 'Your new password should match the re-typed version'
+            });
+        }
+    } catch (error) {
+        // Return unsuccessful message
+        console.error('Password reseting error:', error);
+        res.status(500).json({ 
+            message: 'Error reseting password', 
+            error: error.message 
+        });
+    }
+});
+
+// Profile Management endpoint
+app.post('/profile-management', async (req, res) => {
+    console.log('Received password reset data:', req.body);
+    const { firstName, lastName, dob, language } = req.body;
+    try {
+        // Create an empty JSON object
+        var one = {};
+        var two = { data: {} };
+
+        // Add values to JSON object
+        if(firstName != "") {
+            one.first_name = firstName;
+            two.data.first_name = firstName;
+        } 
+
+        if(lastName != "") {
+            one.last_name = lastName;
+            two.data.last_name = lastName;
+        } 
+
+        if(dob != "") {
+            const birthDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }    
+            one.dob = dob;
+            one.age = age;
+        }
+
+        if(language != "") {
+            one.language = language;
+        }
+
+        // Update changes in the user_profiles database table
+        const { error: profileError } = await serviceClient
+            .from('user_profiles')
+            .update(one)
+            .eq('auth_id', authen);
+
+        if (profileError) {
+            throw profileError;
+        }
+
+        // Update changes in the auth database of supabase
+        const { data: check, error: updateError } = await supabase.auth.updateUser(two);
+
+        if (updateError) {
+            throw updateError;
+        }
+
+        // Return successful message
+        res.status(201).json({
+            message: 'Profile management went successfully',
+            translation: check[0]
+        });
+    } catch (error) {
+        // Return unsuccessful message
+        console.error('Profile management error:', error);
+        res.status(500).json({ 
+            message: 'Error managing profile', 
+            error: error.message 
         });
     }
 });
