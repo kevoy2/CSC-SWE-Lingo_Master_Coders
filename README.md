@@ -81,7 +81,7 @@ node server.js
 - Authentication: GMAIL and Supabase Auth
 - Speech Recognition: Web Speech API
 
-## Contributors
+## Contributors of Group #8
 - Kaleb Evoy
 - Jesse Annan
 - Zoha Khundmiri
