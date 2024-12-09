@@ -11,7 +11,7 @@
 5. Use “npm install cors” in the command prompt to install the cors for Node.js. 
 6. Use “npm install bcrypt” in the command prompt to install the bycrypt for Node.js. 
 7. Use “npm install express” in the command prompt to install the express for Node.js. 
-8. Use “npm install nodemailer” in the command prompt to install the nodemailer for Node.js.
+8. Use “npm install --save @emailjs/browser” in the command prompt to install the emailjs for Javascript.
 9. Use “npm install dotenv” in the command prompt to install the dotenv for Node.js. 
 10. Start the local host using 'node server.js' where the file is stored utilizing the command prompt.
 11. Start by opening the 'index.html' file if you are running the entire application.
@@ -34,4 +34,5 @@
 15. Website Settings (In-Progress)
     
 # Web Application Dependencies:
-The web application must connect to the Supabase database using the .env file, which is not available through our GitHub repository. However, it will be included in the zip file for the final submission.
+- The web application must connect to the Supabase database using the .env file, which is not available through our GitHub repository. However, it will be included in the zip file for the final submission.
+- The contact email is a bonus feature. It is run through EmailJS which is a third-party software.
