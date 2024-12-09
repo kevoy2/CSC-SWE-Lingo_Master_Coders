@@ -75,7 +75,7 @@ node server.js
 - Frontend: HTML, CSS, JavaScript
 - Backend: Node.js, Express
 - Database: Supabase
-- Authentication: Supabase Auth
+- Authentication: GMAIL and Supabase Auth
 - Speech Recognition: Web Speech API
 
 ## Contributors
