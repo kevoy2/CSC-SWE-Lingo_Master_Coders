@@ -121,6 +121,7 @@ SERVICE_ROLE_KEY=[supabase-service-role-key]
 APP_URL=localhost:5500
 # PORT=3000
 ```
+_NB: the content of this file is available upon request_
 
 ### 4. Start the Backend Server
 ```bash
