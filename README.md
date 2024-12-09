@@ -1,38 +1,87 @@
-# LingoScape (Live Translation App) 
-- Team #: 8
-- Team Name: Lingo Master Coders
-- Members: McDavid Adofoli, Jesse Annan, Kaleb Evoy, Zoha Khundmiri, and Hashim Omar
-  
-# How to run and test the application:
-1. Install the correct version of Node.js from: https://nodejs.org/en/download/package-manager 
-2. Use “npm install --save-dev jest” in the command prompt to install Jest for Node.js. 
-3. Use npm install --save-dev jest” in the command prompt to install the supabase connector for Node.js. 
-4. Use “npm install @supabase/supabase-js” in the command prompt to install the supabase connector for Node.js. 
-5. Use “npm install cors” in the command prompt to install the cors for Node.js. 
-6. Use “npm install bcrypt” in the command prompt to install the bycrypt for Node.js. 
-7. Use “npm install express” in the command prompt to install the express for Node.js. 
-8. Use “npm install --save @emailjs/browser” in the command prompt to install the emailjs for Javascript.
-9. Use “npm install dotenv” in the command prompt to install the dotenv for Node.js. 
-10. Start the local host using 'node server.js' where the file is stored utilizing the command prompt.
-11. Start by opening the 'index.html' file if you are running the entire application.
+# LingoScape: Real-Time Translation App
 
-# Web Application Features:
-1. User Registration
-2. User Login/Logout
-3. Profile Management
-4. Text Input
-5. Video Conference Tool Integration (In-Progress)
-6. Speech-to-Text Conversion
-7. Text-to-Text Translation
-8. Text-to-Speech Conversion
-9. Translated Text Display
-10. Live Translation (In-Progress)
-11. Language Database/API
-12. User Information Database 
-13. Language Pair Selection
-14. Reactive Website
-15. Website Settings (In-Progress)
-    
-# Web Application Dependencies:
-- The web application must connect to the Supabase database using the .env file, which is not available through our GitHub repository. However, it will be included in the zip file for the final submission.
-- The contact email is a bonus feature. It is run through EmailJS which is a third-party software.
+## Project Overview
+LingoScape is a live translation application that enables real-time language translation through speech recognition, text translation, and text-to-speech functionality.
+
+## Key Features
+- Speech-to-text translation
+- Text-to-text translation
+- Multi-language support
+- Text-to-speech output
+- User authentication and profile management
+- Translation history and favorites
+
+## Prerequisites
+- Node.js (v14 or later)
+- npm (Node Package Manager)
+- VS Code
+- Live Server extension by Ritwick Dey
+
+## Dependencies
+- bcrypt: ^5.1.1 (Password hashing)
+- cors: ^2.8.5 (Cross-origin resource sharing)
+- dotenv: ^16.4.5 (Environment variable management)
+- express: ^4.21.1 (Web application framework)
+- pg: ^8.13.0 (PostgreSQL client)
+- @supabase/supabase-js (Database management)
+
+## Setup Instructions
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/kevoy2/CSC-SWE-Lingo_Master_Coders.git
+cd [project-directory]
+```
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Create .env File
+Create a `.env` file in the project root with the following variables:
+```
+DB_URL=[supabase-project-url]
+DB_API=[supabase-anon-key]
+SERVICE_ROLE_KEY=[supabase-service-role-key]
+APP_URL=http://localhost:5500
+# PORT=3000
+```
+
+### 4. Start the Backend Server
+```bash
+node server.js
+```
+
+### 5. Launch Frontend
+- Install Live Server extension in VS Code
+- Right-click on `index.html` or `register.html`
+- Select "Open with Live Server"
+
+## Browser Compatibility
+- Chrome (recommended)
+- Edge
+
+## Limitations
+- Video conferencing integration (incomplete)
+- No collaboration with news aggregator project
+
+## Future Enhancements
+- Complete video conferencing translation
+- Expand language support
+- Improve speech recognition accuracy
+
+## Technologies Used
+- Frontend: HTML, CSS, JavaScript
+- Backend: Node.js, Express
+- Database: Supabase
+- Authentication: Supabase Auth
+- Speech Recognition: Web Speech API
+
+## Contributors
+- Kaleb Evoy
+- Jesse Annan
+- Zoha Khundmiri
+- McDavid Adofoli
+- Hashim Omar
+
