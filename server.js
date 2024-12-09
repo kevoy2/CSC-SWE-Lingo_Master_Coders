@@ -330,7 +330,7 @@ app.post('/save-favorite', async (req, res) => {
 
 // Support Ticket endpoint
 app.post('/support-ticket', async (req, res) => {
-    console.log('Received password reset data:', req.body);
+    console.log('Received support ticket data:', req.body);
     const { name, email, category, description } = req.body;
     try {
         // Grab the id from user profile
@@ -442,7 +442,7 @@ app.post('/password-reset', async (req, res) => {
 
 // Profile Management endpoint
 app.post('/profile-management', async (req, res) => {
-    console.log('Received password reset data:', req.body);
+    console.log('Received profile management data:', req.body);
     const { firstName, lastName, dob, language } = req.body;
     try {
         // Create an empty JSON object
@@ -503,6 +503,75 @@ app.post('/profile-management', async (req, res) => {
         console.error('Profile management error:', error);
         res.status(500).json({ 
             message: 'Error managing profile', 
+            error: error.message 
+        });
+    }
+});
+
+// Setting endpoint
+app.post('/setting', async (req, res) => {
+    console.log('Received setting data:', req.body);
+    const { theme, language } = req.body;
+    try {
+        // Get the user id from in the user_profiles database table
+        const { data: target, error: fetchError} = await serviceClient
+                .from('user_profiles')
+                .select()
+                .eq('auth_id', authen);
+
+        if (fetchError) {
+            throw fetchError;
+        }
+
+        // Check if user already has settings saved
+        const { data: check, error: checkError} = await serviceClient
+                .from('user_settings')
+                .select()
+                .eq('user_id', target[0].id);
+        
+        if (checkError) {
+            throw checkError;
+        }
+
+        // Update setting database table
+        if (check[0] == null) {
+            // Insert new setting selection
+            const { error: profileError } = await serviceClient
+                .from('user_settings')
+                .insert({
+                    user_id: target[0].id,
+                    theme: theme,
+                    ui_language: language,
+                });
+
+            if (profileError) {
+                throw profileError;
+            }  
+        } else {
+            // Update an existing setting selection
+            const { error: profileError } = await serviceClient
+                .from('user_settings')
+                .update({
+                    theme: theme,
+                    ui_language: language,
+                })
+                .eq('user_id', target[0].id);
+
+            if (profileError) {
+                throw profileError;
+            }
+        }
+
+        // Return successful message
+        res.status(201).json({
+            message: 'Setting selection went successfully',
+            translation: check[0]
+        });
+    } catch (error) {
+        // Return unsuccessful message
+        console.error('Setting Selection error:', error);
+        res.status(500).json({ 
+            message: 'Error setting selection', 
             error: error.message 
         });
     }
