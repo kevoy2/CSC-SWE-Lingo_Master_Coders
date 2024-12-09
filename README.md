@@ -15,7 +15,7 @@ LingoScape is a live translation application that enables real-time language tra
 - Node.js (v14 or later)
 - npm (Node Package Manager)
 - VS Code
-- Live Server extension by Ritwick Dey
+- Live Server extension by Ritwick Dey (install as VS Code extension)
 
 ## Dependencies
 - bcrypt: ^5.1.1 (Password hashing)
