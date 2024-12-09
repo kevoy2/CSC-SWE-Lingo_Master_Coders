@@ -9,12 +9,23 @@
 </head>
 <body>
     <nav class="top-nav">
+        <button id="menu-toggle" class="menu-btn">
+            <span class="menu-icon"></span>
+        </button>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
         </div>
     </nav>
+    <!-- Side Menu -->
+    <div id="side-menu" class="side-menu">
+        <a href="audio-translation.html">Speech Translation</a>
+        <a href="video-conference.html">Video Conference</a>
+        <a href="support-ticket.html">Support Ticket</a>
+        <a href="profile-management.html">Profile Management</a>
+        <a href="index.html">Log Out</a>
+    </div>
 
     <main class="container">
         <h1>Support Ticket</h1>
@@ -45,6 +56,8 @@
     <footer>
         &#xA9; 2024 LingoScape. All rights reserved.
     </footer>
+
+    <script src="menu-toggle.js"></script> 
 
     <script>
         document.getElementById('support-ticket-form').addEventListener('submit', async (e) => {
