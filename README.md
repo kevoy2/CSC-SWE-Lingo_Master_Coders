@@ -15,7 +15,7 @@ LingoScape is a live translation application that enables real-time language tra
 - Node.js (v14 or later)
 - npm (Node Package Manager)
 - VS Code
-- Live Server extension by Ritwick Dey
+- Live Server extension by Ritwick Dey (install as VS Code extension)
 
 ## Dependencies
 - bcrypt: ^5.1.1 (Password hashing)
@@ -24,6 +24,8 @@ LingoScape is a live translation application that enables real-time language tra
 - express: ^4.21.1 (Web application framework)
 - pg: ^8.13.0 (PostgreSQL client)
 - @supabase/supabase-js (Database management)
+- --save @emailjs/browser (Email sending)
+- --save-dev jest (Node.js Unit Testing)
 
 ## Setup Instructions
 
@@ -44,9 +46,10 @@ Create a `.env` file in the project root with the following variables:
 DB_URL=[supabase-project-url]
 DB_API=[supabase-anon-key]
 SERVICE_ROLE_KEY=[supabase-service-role-key]
-APP_URL=http://localhost:5500
+APP_URL=localhost:5500
 # PORT=3000
 ```
+NB: the actual content will be provided upon request
 
 ### 4. Start the Backend Server
 ```bash
