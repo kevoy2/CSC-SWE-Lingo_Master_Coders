@@ -24,6 +24,8 @@ LingoScape is a live translation application that enables real-time language tra
 - express: ^4.21.1 (Web application framework)
 - pg: ^8.13.0 (PostgreSQL client)
 - @supabase/supabase-js (Database management)
+- --save @emailjs/browser (Email sending)
+- --save-dev jest (Node.js Unit Testing)
 
 ## Setup Instructions
 
